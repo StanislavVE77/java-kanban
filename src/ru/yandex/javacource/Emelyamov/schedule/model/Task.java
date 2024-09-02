@@ -1,9 +1,9 @@
-package model;
+package ru.yandex.javacource.Emelyamov.schedule.model;
 
 public class Task {
     private String name;
     private String description;
-    private int taskId;
+    private int id;
     private TaskStatus status;
 
     public Task(String name, TaskStatus status, String description) {
@@ -37,11 +37,11 @@ public class Task {
     }
 
     public int getTaskId() {
-        return taskId;
+        return id;
     }
 
     public void setTaskId(int taskId) {
-        this.taskId = taskId;
+        this.id = taskId;
     }
 
     @Override
@@ -49,22 +49,21 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return taskId == task.taskId;
+        return id == task.id;
     }
 
     @Override
     public int hashCode() {
-        return taskId;
+        return id;
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "taskId=" + taskId +
+                "taskId=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
     }
-
 }
