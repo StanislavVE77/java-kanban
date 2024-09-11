@@ -1,4 +1,4 @@
-package ru.yandex.javacource.Emelyamov.schedule.model;
+package ru.yandex.javacource.emelyanov.schedule.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,20 @@ public class Epic extends Task {
     }
 
     public void addSubTask(Subtask subtask) {
-        subtaskIds.add(subtask.getTaskId());
+        if (this.getId() == subtask.getId()) {
+            return;
+        } else {
+            subtaskIds.add(subtask.getId());
+        }
+    }
+
+    public boolean addSubTask(Integer id) {
+        if (this.getId() == id) {
+            return false;
+        } else {
+            subtaskIds.add(id);
+            return true;
+        }
     }
 
     public void removeSubTask(Subtask subtask) {
@@ -34,7 +47,7 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "epicId=" + getTaskId() +
+                "epicId=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +

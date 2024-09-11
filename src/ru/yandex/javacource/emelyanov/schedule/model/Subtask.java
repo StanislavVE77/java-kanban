@@ -1,4 +1,4 @@
-package ru.yandex.javacource.Emelyamov.schedule.model;
+package ru.yandex.javacource.emelyanov.schedule.model;
 
 public class Subtask extends Task {
     private int epicId;
@@ -8,8 +8,13 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
+    public boolean setEpicId(int epicId) {
+        if (this.getId() == epicId) {
+            return false;
+        } else {
+            this.epicId = epicId;
+            return true;
+        }
     }
 
     public int getEpicId() {
@@ -19,7 +24,7 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return "Subtask{" +
-                "subtaskId=" + getTaskId() +
+                "subtaskId=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +

@@ -1,4 +1,4 @@
-package ru.yandex.javacource.Emelyamov.schedule.model;
+package ru.yandex.javacource.emelyanov.schedule.model;
 
 public enum TaskStatus {
     NEW,

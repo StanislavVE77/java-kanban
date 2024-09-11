@@ -1,4 +1,4 @@
-package ru.yandex.javacource.Emelyamov.schedule.model;
+package ru.yandex.javacource.emelyanov.schedule.model;
 
 public class Task {
     private String name;
@@ -36,12 +36,12 @@ public class Task {
         this.name = name;
     }
 
-    public int getTaskId() {
+    public int getId() {
         return id;
     }
 
-    public void setTaskId(int taskId) {
-        this.id = taskId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
