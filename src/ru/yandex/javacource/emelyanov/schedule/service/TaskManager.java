@@ -4,7 +4,6 @@ import ru.yandex.javacource.emelyanov.schedule.model.Epic;
 import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -23,11 +22,11 @@ public interface TaskManager {
 
     Subtask getSubtask(int subtaskId);
 
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<Subtask> getAllSubtasks();
+    List<Subtask> getAllSubtasks();
 
     void updateTask(Task task);
 
@@ -47,5 +46,7 @@ public interface TaskManager {
 
     void deleteAllSubtasks();
 
-    ArrayList<Subtask> getEpicSubtasks(int epicId);
+    List<Subtask> getEpicSubtasks(int epicId);
+
+    List<Task> getHistory();
 }

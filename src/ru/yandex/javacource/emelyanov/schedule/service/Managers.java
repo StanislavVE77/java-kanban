@@ -2,13 +2,12 @@ package ru.yandex.javacource.emelyanov.schedule.service;
 
 public final class Managers {
 
-    static HistoryManager getDefaultHistory(){
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        return historyManager;
+    public static HistoryManager getDefaultHistory(){
+        return new InMemoryHistoryManager();
     }
 
-    static TaskManager getDefault() {
-        TaskManager taskManager = new InMemoryTaskManager();
-        return taskManager;
+    public static TaskManager getDefault() {
+        //return new InMemoryTaskManager(getDefaultHistory());
+        return new InMemoryTaskManager(new InMemoryHistoryManager());
     }
 }

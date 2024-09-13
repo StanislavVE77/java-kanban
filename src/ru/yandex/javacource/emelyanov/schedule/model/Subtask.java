@@ -8,6 +8,11 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    public Subtask(int id, String name, TaskStatus status, String description, int epicId) {
+        super(id, name, status, description);
+        this.epicId = epicId;
+    }
+
     public boolean setEpicId(int epicId) {
         if (this.getId() == epicId) {
             return false;
@@ -31,6 +36,5 @@ public class Subtask extends Task {
                 ", epicId=" + this.epicId +
                 '}';
     }
-
 }
 

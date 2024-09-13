@@ -2,13 +2,20 @@ package ru.yandex.javacource.emelyanov.schedule.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 public class Epic extends Task {
     private List<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(String name, TaskStatus status, String description) {
         super(name, status, description);
+    }
+
+    public Epic(String name, String description) {
+        super(name, description);
+    }
+
+    public  Epic(int id, String name, TaskStatus status, String description) {
+        super(id, name, status, description);
     }
 
     public void addSubTask(Subtask subtask) {

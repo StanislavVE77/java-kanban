@@ -6,26 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    List<Task> historyList = new ArrayList<>(SIZE_OF_HISTORY);
+    static final int SIZE_OF_HISTORY = 10;
+    private List<Task> history = new ArrayList<>(SIZE_OF_HISTORY);
 
     public InMemoryHistoryManager() {
-        this.historyList = historyList;
+        this.history = history;
     }
 
     @Override
     public List<Task> getHistory() {
-        return historyList;
+        return history;
     }
 
     @Override
-    public boolean add(Task task) {
-        Task newTask = new Task(task.getName(), task.getStatus(),task.getDescription());
-        if (historyList.size() == SIZE_OF_HISTORY) {
-            for (int i = 0; i < SIZE_OF_HISTORY - 1; i++) {
-                historyList.set(i, historyList.get(i + 1));
-            }
-            historyList.remove(SIZE_OF_HISTORY - 1);
+    public void add(Task task) {
+        //Task newTask = new Task(task.getName(), task.getStatus(),task.getDescription());
+        if (task == null) {
+            return;
         }
-        return historyList.add(newTask);
+        if (history.size() >= SIZE_OF_HISTORY) {
+            history.removeFirst();
+        }
+        history.add(task);
     }
 }
