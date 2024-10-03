@@ -18,7 +18,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-
     private Map<Integer, Node> history = new HashMap<>();
     Node first;
     Node last;
