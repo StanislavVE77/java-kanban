@@ -21,11 +21,11 @@ class InMemoryHistoryManagerTest {
     void beforeEach() {
         historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager(historyManager);
-        task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW,"Описание 1"));
+        task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1"));
         task1.setId(1);
-        task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW,"Описание 2"));
+        task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2"));
         task2.setId(2);
-        task3 = taskManager.createTask(new Task("Задача 3", TaskStatus.NEW,"Описание 3"));
+        task3 = taskManager.createTask(new Task("Задача 3", TaskStatus.NEW, "Описание 3"));
         task3.setId(3);
     }
 
@@ -37,7 +37,7 @@ class InMemoryHistoryManagerTest {
         final List<Task> history = historyManager.getAll();
 
         assertNotNull(history, "Список задач в истории пустой.");
-        assertEquals(1, history.size(), "Количество задач в списке "+ history.size() + " не равно 1.");
+        assertEquals(1, history.size(), "Количество задач в списке " + history.size() + " не равно 1.");
         assertEquals(history.getFirst(), history.getLast(), "Первый элемент и последний элемент истории не совпадают.");
     }
 
@@ -50,7 +50,7 @@ class InMemoryHistoryManagerTest {
         final List<Task> history = historyManager.getAll();
 
         assertNotNull(history, "Список задач в истории пустой.");
-        assertEquals(2, history.size(), "Количество задач в списке "+ history.size() + " не равно 2.");
+        assertEquals(2, history.size(), "Количество задач в списке " + history.size() + " не равно 2.");
         assertNotEquals(history.getFirst(), history.getLast(), "Первый элемент и последний элемент истории совпадают.");
     }
 
@@ -61,7 +61,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
         historyManager.add(task3);
         for (int i = 4; i <= 11; i++) {
-            Task task = taskManager.createTask(new Task("Задача " + i, TaskStatus.NEW,"Описание " + i));
+            Task task = taskManager.createTask(new Task("Задача " + i, TaskStatus.NEW, "Описание " + i));
             task.setId(i);
             historyManager.add(task);
         }
@@ -69,7 +69,7 @@ class InMemoryHistoryManagerTest {
         final List<Task> history = historyManager.getAll();
 
         assertNotNull(history, "Список задач в истории пустой.");
-        assertEquals(11, history.size(), "Количество задач в списке "+ history.size() + " не равно 11.");
+        assertEquals(11, history.size(), "Количество задач в списке " + history.size() + " не равно 11.");
         assertEquals(history.getFirst().getId(), 1, "Первый элемент поменялся.");
         assertEquals(history.getLast().getId(), 11, "Последния добавленная задача не стала последним элементов в истории.");
     }
@@ -85,7 +85,7 @@ class InMemoryHistoryManagerTest {
 
         final List<Task> history = historyManager.getAll();
 
-        assertEquals(2, history.size(), "Количество задач в списке "+ history.size() + " не равно 2.");
+        assertEquals(2, history.size(), "Количество задач в списке " + history.size() + " не равно 2.");
         assertEquals(history.getLast().getId(), 3, "Изменился последний элемент истории.");
         assertEquals(history.getFirst().getId(), 2, "Первый элемент истории не изменился.");
     }
@@ -124,7 +124,7 @@ class InMemoryHistoryManagerTest {
 
         final List<Task> history = historyManager.getAll();
 
-        assertEquals(3, history.size(), "Количество задач в списке "+ history.size() + " не равно 3.");
+        assertEquals(3, history.size(), "Количество задач в списке " + history.size() + " не равно 3.");
         assertEquals(history.getLast().getId(), 1, "Задача task1 в конец истории не добавилась.");
         assertEquals(history.getFirst().getId(), 2, "Первый элемент истории не поменялся.");
     }
@@ -139,7 +139,7 @@ class InMemoryHistoryManagerTest {
 
         final List<Task> history = historyManager.getAll();
 
-        assertEquals(3, history.size(), "Количество задач в списке "+ history.size() + " не равно 3.");
+        assertEquals(3, history.size(), "Количество задач в списке " + history.size() + " не равно 3.");
         assertEquals(history.getLast().getId(), 2, "Задача task2 в конец истории не добавилась.");
         assertEquals(history.getFirst().getId(), 1, "Первый элемент истории изменился.");
     }
@@ -154,7 +154,7 @@ class InMemoryHistoryManagerTest {
 
         final List<Task> history = historyManager.getAll();
 
-        assertEquals(3, history.size(), "Количество задач в списке "+ history.size() + " не равно 3.");
+        assertEquals(3, history.size(), "Количество задач в списке " + history.size() + " не равно 3.");
         assertEquals(history.getLast().getId(), 3, "Последний элемент истории изменился.");
         assertEquals(history.getFirst().getId(), 1, "Первый элемент истории изменился.");
     }
