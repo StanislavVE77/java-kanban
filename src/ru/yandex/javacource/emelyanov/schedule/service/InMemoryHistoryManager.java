@@ -18,13 +18,9 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private Map<Integer, Node> history = new HashMap<>();
-    Node first;
-    Node last;
-
-    public InMemoryHistoryManager() {
-        this.history = history;
-    }
+    private final Map<Integer, Node> history = new HashMap<>();
+    private Node first;
+    private Node last;
 
     @Override
     public List<Task> getAll() {
@@ -33,24 +29,30 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        Node node = history.get(task.getId());
-        if (node != null) {
-            removeNode(node);
+        if (task == null) {
+            return;
         }
+        final int id = task.getId();
+        remove(id);
         linkLast(task);
-        history.put(task.getId(), last);
+        history.put(id, last);
     }
 
     @Override
     public void remove(int id) {
-        Node node = history.get(id);
+        final Node node = history.remove(id);
+        if (node == null) {
+            return;
+        }
         removeNode(node);
     }
 
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        for (Node node = first; node != null; node = node.next) {
+        Node node = first;
+        while (node != null) {
             tasks.add(node.task);
+            node = node.next;
         }
         return tasks;
     }
@@ -59,10 +61,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         final Node node = last;
         final Node newNode = new Node(node, task, null);
         last = newNode;
-        if (node == null)
+        if (node == null) {
             first = newNode;
-        else
+        } else {
             node.next = newNode;
+        }
     }
 
     private void removeNode(Node node) {
@@ -79,6 +82,5 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             node.prev.next = node.next;
         }
-        history.remove(node.task.getId());
     }
 }
