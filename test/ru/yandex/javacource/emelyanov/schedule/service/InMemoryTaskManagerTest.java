@@ -20,7 +20,7 @@ class InMemoryTaskManagerTest {
     void beforeEach() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager(historyManager);
-        task = taskManager.createTask(new Task("Название задачи", TaskStatus.NEW,"Описание задачи"));
+        task = taskManager.createTask(new Task("Название задачи", TaskStatus.NEW, "Описание задачи"));
     }
 
     @Test
@@ -50,7 +50,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("Проверка, что наследники класса Task равны друг другу, если равен их id")
     void checkTwoEpicsAndTwoSubtasksWithEqualIds() {
-        Epic epic = new Epic("Название эпика", TaskStatus.NEW,"Описание эпика");
+        Epic epic = new Epic("Название эпика", TaskStatus.NEW, "Описание эпика");
         final int epicId = taskManager.createEpic(epic).getId();
 
         Subtask subtask = new Subtask("Название сабтаска", TaskStatus.NEW, "Описание сабтаска", epicId);
@@ -68,7 +68,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("Проверка, что объект Epic нельзя добавить в самого себя в виде подзадачи")
     void checkEpicCannotBeAddedToItselfAsASubtask() {
-        Epic epic = new Epic("Название эпика", TaskStatus.NEW,"Описание эпика");
+        Epic epic = new Epic("Название эпика", TaskStatus.NEW, "Описание эпика");
         final int epicId = taskManager.createEpic((Epic) epic).getId();
 
         boolean isSubtaskAdded = epic.addSubTask(epicId);
@@ -78,7 +78,7 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("Проверьте, что объект Subtask нельзя сделать своим же эпиком")
     void checkSubtaskCannotBeEpic() {
-        Epic epic = new Epic("Название эпика", TaskStatus.NEW,"Описание эпика");
+        Epic epic = new Epic("Название эпика", TaskStatus.NEW, "Описание эпика");
         final int epicId = taskManager.createEpic(epic).getId();
 
         Subtask subtask = new Subtask("Название сабтаска", TaskStatus.NEW, "Описание сабтаска", epicId);

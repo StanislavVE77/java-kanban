@@ -17,7 +17,7 @@ class ManagersTest {
     @BeforeEach
     void beforeEach() {
         taskManager = Managers.getDefault();
-        task = taskManager.createTask(new Task("Задача", TaskStatus.NEW,"Описание"));
+        task = taskManager.createTask(new Task("Задача", TaskStatus.NEW, "Описание"));
     }
 
     @Test
@@ -29,7 +29,7 @@ class ManagersTest {
 
     @Test
     @DisplayName("Задачи с заданным id и сгенерированным id не должны конфликтовать внутри менеджера")
-    void  shouldWorkWithDifferentIds() {
+    void shouldWorkWithDifferentIds() {
         Task task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2"));
 
         final List<Task> tasks = taskManager.getAllTasks();
