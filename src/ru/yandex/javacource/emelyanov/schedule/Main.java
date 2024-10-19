@@ -4,64 +4,18 @@ import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.Epic;
 import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
-import ru.yandex.javacource.emelyanov.schedule.service.InMemoryHistoryManager;
-import ru.yandex.javacource.emelyanov.schedule.service.InMemoryTaskManager;
+import ru.yandex.javacource.emelyanov.schedule.service.FileBackedTaskManager;
 import ru.yandex.javacource.emelyanov.schedule.service.TaskManager;
-import ru.yandex.javacource.emelyanov.schedule.service.Managers;
+
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = Managers.getDefault();
-
-        Task task = taskManager.createTask(new Task("New task", TaskStatus.NEW, "Description task"));
-        System.out.println("Create Task: " + task);
-
-        Task taskFromManager = taskManager.getTask(task.getId());
-        System.out.println("Get Task: " + taskFromManager);
-
-        Task taskUpdated = new Task(taskFromManager.getId(), "New task Update", TaskStatus.DONE, "Description Update");
-        taskManager.updateTask(taskUpdated);
-        System.out.println("Update Task: " + taskUpdated);
-
-        taskManager.deleteTask(taskFromManager.getId());
-        System.out.println("Delete Task: " + task);
-
-        Epic epic = taskManager.createEpic(new Epic("New epic", "Description epic"));
-        System.out.println("Create Epic: " + epic);
-
-        Subtask subtask = taskManager.createSubtask((new Subtask("New subtask", TaskStatus.NEW, "Description subtask", epic.getId())));
-        System.out.println("Create Subtask: " + subtask);
-
-        Subtask subtask_2 = taskManager.createSubtask((new Subtask("New subtask 2", TaskStatus.IN_PROGRESS, "Description subtask 2", epic.getId())));
-        System.out.println("Create Subtask 2: " + subtask_2);
-
-        Epic epicFromManager = taskManager.getEpic(epic.getId());
-        System.out.println("Get Epic: " + epicFromManager);
-
-        Subtask subtaskFromManager = taskManager.getSubtask(subtask.getId());
-        System.out.println("Get Subtask: " + subtaskFromManager);
-
-        Subtask subtaskFromManager2 = taskManager.getSubtask(subtask_2.getId());
-        System.out.println("Get Subtask 2: " + subtaskFromManager2);
-
-        Epic epicUpdated = new Epic(epicFromManager.getId(), "New epic Update", TaskStatus.DONE, "Description Epic Update");
-        taskManager.updateEpic(epicUpdated);
-        System.out.println("Update Epic: " + epicUpdated);
-
-        Subtask subtaskUpdated = new Subtask(subtaskFromManager.getId(), "New subtask Update", TaskStatus.DONE, "Description Subtask Update", epic.getId());
-        taskManager.updateSubtask(subtaskUpdated);
-        System.out.println("Update Subtask: " + subtaskUpdated);
-
-        taskManager.deleteSubtask(subtaskFromManager.getId());
-        System.out.println("Delete Subtask: " + subtask);
-
-
-        taskManager.deleteEpic(epicFromManager.getId());
-        System.out.println("Delete Epic: " + epic);
-
-
+        File file = new File("tasks.csv");
+        FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
+        TaskManager taskManager = fileTaskManager.loadFromFile(file);
         System.out.println("-------- Созданние объектов для тестирования History -------------------------------------");
         Task task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание задачи 1"));
         Task task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание задачи 2"));
@@ -79,9 +33,13 @@ public class Main {
         taskManager.getTask(task1.getId());
         taskManager.getEpic(epic2.getId());
         taskManager.getEpic(epic1.getId());
+        taskManager.getTask(task1.getId());
         taskManager.getSubtask(subtask1.getId());
         taskManager.getSubtask(subtask2.getId());
         taskManager.getSubtask(subtask3.getId());
+        taskManager.getTask(task4.getId());
+        taskManager.getTask(task4.getId());
+        taskManager.getSubtask(subtask2.getId());
 
         Task taskForUpdate = new Task(task1.getId(), "Задача 1 UPDATE", TaskStatus.DONE, "Описание задачи 1 UPDATE");
         taskManager.updateTask(taskForUpdate);
