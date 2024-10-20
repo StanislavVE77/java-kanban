@@ -47,10 +47,6 @@ public class Epic extends Task {
         this.subtaskIds = subTasks;
     }
 
-    public Integer getEpicId() {
-        return null;
-    }
-
     public TaskType getType() {
         return TaskType.EPIC;
     }

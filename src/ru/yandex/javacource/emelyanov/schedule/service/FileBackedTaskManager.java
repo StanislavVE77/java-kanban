@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
+    private static final String HEADER = "id,type,name,status,description,epic";
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -105,8 +106,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         saveToFile();
     }
 
-    private String toString(Task task) {
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + "," + task.getStatus() + "," + task.getEpicId();
+    public static String toString(Task task) {
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : "");
     }
 
     private Task fromString(String line) {
@@ -134,7 +135,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void saveToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.append("Id,Type,Name,Description,Status,EpicId");
+            writer.append(HEADER);
             writer.newLine();
             for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
                 writer.append(toString(entry.getValue()));
@@ -170,7 +171,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     epics.put(id, (Epic) task);
                 } else {
                     subTasks.put(id, (Subtask) task);
-                    epics.get(task.getEpicId()).addSubTask(id);
+                    epics.get(((Subtask) task).getEpicId()).addSubTask(id);
                 }
                 if (maxId < id) {
                     maxId = id;
