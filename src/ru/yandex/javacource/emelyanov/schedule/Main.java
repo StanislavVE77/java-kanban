@@ -4,15 +4,18 @@ import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.Epic;
 import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
+import ru.yandex.javacource.emelyanov.schedule.service.FileBackedTaskManager;
 import ru.yandex.javacource.emelyanov.schedule.service.TaskManager;
-import ru.yandex.javacource.emelyanov.schedule.service.Managers;
+
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = Managers.getDefault();
-
+        File file = new File("tasks.csv");
+        FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
+        TaskManager taskManager = fileTaskManager.loadFromFile(file);
         System.out.println("-------- Созданние объектов для тестирования History -------------------------------------");
         Task task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание задачи 1"));
         Task task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание задачи 2"));
