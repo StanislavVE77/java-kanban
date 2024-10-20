@@ -107,15 +107,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static String toString(Task task) {
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : "");
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : null);
     }
 
     private Task fromString(String line) {
         final String[] columns = line.split(",");
         String id = columns[0];
         String name = columns[2];
-        String description = columns[3];
-        String status = columns[4];
+        String description = columns[4];
+        String status = columns[3];
         String epicId = columns[5];
         TaskType type = TaskType.valueOf(columns[1]);
         Task task = null;
