@@ -10,10 +10,6 @@ public class Epic extends Task {
         super(name, status, description);
     }
 
-    public Epic(String name, String description) {
-        super(name, description);
-    }
-
     public Epic(int id, String name, TaskStatus status, String description) {
         super(id, name, status, description);
     }
@@ -49,6 +45,10 @@ public class Epic extends Task {
 
     public void setSubTasks(List<Integer> subTasks) {
         this.subtaskIds = subTasks;
+    }
+
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
     @Override

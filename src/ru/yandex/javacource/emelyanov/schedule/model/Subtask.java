@@ -22,8 +22,12 @@ public class Subtask extends Task {
         }
     }
 
-    public int getEpicId() {
+    public Integer getEpicId() {
         return epicId;
+    }
+
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 
     @Override
