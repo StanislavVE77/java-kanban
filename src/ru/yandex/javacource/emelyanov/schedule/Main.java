@@ -18,7 +18,6 @@ public class Main {
         File file = new File("tasks.csv");
         FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
         TaskManager taskManager = fileTaskManager.loadFromFile(file);
-        //TaskManager taskManager = Managers.getDefault();
         System.out.println("-------- Созданние объектов для тестирования History -------------------------------------");
         Task task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание задачи 1", Duration.ofMinutes(8), LocalDateTime.of(2023, 8, 13, 11, 54, 0)));
         Task task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание задачи 2", Duration.ofMinutes(20), LocalDateTime.of(2024, 10, 31, 17, 56, 0)));
