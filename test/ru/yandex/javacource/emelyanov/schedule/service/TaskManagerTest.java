@@ -8,10 +8,6 @@ import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;

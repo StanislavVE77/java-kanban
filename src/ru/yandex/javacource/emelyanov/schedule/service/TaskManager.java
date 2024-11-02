@@ -5,7 +5,6 @@ import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskManager {
 

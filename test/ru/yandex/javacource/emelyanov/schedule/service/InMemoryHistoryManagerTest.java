@@ -9,7 +9,6 @@ import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
