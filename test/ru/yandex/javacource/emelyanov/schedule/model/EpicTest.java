@@ -21,4 +21,5 @@ class EpicTest {
         assertEquals(expected.getStatus(), actual.getStatus(), message + ", status");
         assertEquals(expected.getDescription(), actual.getDescription(), message + ", description");
     }
+
 }

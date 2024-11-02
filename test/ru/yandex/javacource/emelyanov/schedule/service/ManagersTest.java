@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,7 @@ class ManagersTest {
     @BeforeEach
     void beforeEach() {
         taskManager = Managers.getDefault();
-        task = taskManager.createTask(new Task("Задача", TaskStatus.NEW, "Описание"));
+        task = taskManager.createTask(new Task("Задача", TaskStatus.NEW, "Описание", Duration.ofMinutes(8), LocalDateTime.parse("2020-01-11T10:00:00")));
     }
 
     @Test
