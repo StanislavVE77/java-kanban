@@ -9,10 +9,8 @@ public class Task {
     private String description;
     private int id;
     private TaskStatus status;
-
-    Duration duration;
-    LocalDateTime startTime;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(String name, TaskStatus status, String description, Duration duration, LocalDateTime startTime) {
         this.name = name;
@@ -129,6 +127,7 @@ public class Task {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return "Task{" +
                 "taskId=" + id +
                 ", name='" + name + '\'' +

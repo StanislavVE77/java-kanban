@@ -2,25 +2,22 @@ package ru.yandex.javacource.emelyanov.schedule.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private List<Integer> subtaskIds = new ArrayList<>();
-    LocalDateTime endTime;
+    private LocalDateTime endTime;
 
 
     public Epic(String name, TaskStatus status, String description) {
-        super(name, status, description);
-        this.duration = Duration.ofMinutes(0);
-        this.startTime = LocalDateTime.now();
+        super(name, status, description, Duration.ofMinutes(0), LocalDateTime.now());
         this.endTime = LocalDateTime.now();
     }
 
     public Epic(int id, String name, TaskStatus status, String description) {
-        super(id, name, status, description);
-        this.duration = Duration.ofMinutes(0);
-        this.startTime = LocalDateTime.now();
+        super(id, name, status, description, Duration.ofMinutes(0), LocalDateTime.now());
         this.endTime = LocalDateTime.now();
     }
 
@@ -72,13 +69,14 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return "Epic{" +
                 "epicId=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime.format(formatter) +
+                ", duration=" + getDuration().toMinutes() +
+                ", startTime=" + getStartTime().format(formatter) +
                 ", endTime=" + endTime.format(formatter) +
                 ", subtaskIds=" + subtaskIds +
                 '}';

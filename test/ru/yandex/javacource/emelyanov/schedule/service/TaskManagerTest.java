@@ -8,6 +8,10 @@ import ru.yandex.javacource.emelyanov.schedule.model.Subtask;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -196,11 +200,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    @DisplayName("Задачи пересекаются по времени")
+    @DisplayName("Пересечение задач по времени генерит ошибку")
     void shouldCrossTask() {
         Task task1 = taskManager.createTask(new Task("Название задачи 1", TaskStatus.NEW, "Описание задачи", Duration.ofMinutes(15), LocalDateTime.of(2000, 10, 31, 15, 40, 0)));
-        Task task2 = taskManager.createTask(new Task("Название задачи 2", TaskStatus.NEW, "Описание задачи", Duration.ofMinutes(15), LocalDateTime.of(2000, 10, 31, 15, 45, 0)));
-
-        assertEquals(taskManager.getAllTasks().size(), 2, "Есть пересечение 2-х задач.");
+        assertThrows(TaskValidationException.class, () -> {
+            Task task2 = taskManager.createTask(new Task("Название задачи 2", TaskStatus.NEW, "Описание задачи", Duration.ofMinutes(15), LocalDateTime.of(2000, 10, 31, 15, 45, 0)));
+        }, "Пересечение задач по времени должно генерить ошибку");
     }
 }

@@ -25,7 +25,7 @@ public class Main {
         Task task4 = taskManager.createTask(new Task("Задача 4", TaskStatus.NEW, "Описание задачи 4", Duration.ofMinutes(12), LocalDateTime.of(2023, 8, 12, 11, 50, 0)));
         Epic epic1 = taskManager.createEpic(new Epic("Эпик 1", TaskStatus.NEW, "Описание эпика 1"));
         Subtask subtask1 = taskManager.createSubtask(new Subtask("Подзадача 1", TaskStatus.DONE, "Описание подзадачи 1", epic1.getId(), Duration.ofMinutes(11), LocalDateTime.of(2024, 10, 31, 17, 56, 0)));
-        Subtask subtask2 = taskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId(), Duration.ofMinutes(11), LocalDateTime.of(2024, 10, 31, 19, 56, 0)));
+        Subtask subtask2 = taskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId(), Duration.ofMinutes(11), LocalDateTime.of(2024, 10, 31, 18, 55, 0)));
         Epic epic2 = taskManager.createEpic(new Epic("Эпик 2", TaskStatus.NEW, "Описание эпика 2"));
         Subtask subtask3 = taskManager.createSubtask(new Subtask("Подзадача 3", TaskStatus.NEW, "Описание подзадачи 3", epic2.getId(), Duration.ofMinutes(4), LocalDateTime.of(2024, 5, 1, 11, 11, 0)));
         Subtask subtask4 = taskManager.createSubtask(new Subtask("Подзадача 4", TaskStatus.NEW, "Описание подзадачи 4", epic2.getId(), Duration.ofMinutes(6), LocalDateTime.of(2024, 4, 24, 17, 10, 0)));

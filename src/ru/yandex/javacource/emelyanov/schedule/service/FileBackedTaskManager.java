@@ -177,7 +177,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 } else {
                     subTasks.put(id, (Subtask) task);
                     epics.get(((Subtask) task).getEpicId()).addSubTask(id);
-                    updateEpicParams(epics.get(((Subtask) task).getEpicId()));
+                    updateEpicStatus(epics.get(((Subtask) task).getEpicId()));
+                    updateEpicDuration(epics.get(((Subtask) task).getEpicId()));
                 }
                 if (maxId < id) {
                     maxId = id;
