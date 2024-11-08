@@ -67,9 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
             throw new TaskValidationException("Задача пересекаются по времени");
         }
         Epic epic = epics.get(subtask.getEpicId());
-        if (epic == null) {
-            return null;
-        }
+        Optional.of(epic).orElseThrow(() -> new NotFoundException("Задача с id=" + subtask.getEpicId() + " не найдена."));
         subtask.setId(generateId());
         subTasks.put(subtask.getId(), subtask);
         prioritizedTasks.add(subtask);
