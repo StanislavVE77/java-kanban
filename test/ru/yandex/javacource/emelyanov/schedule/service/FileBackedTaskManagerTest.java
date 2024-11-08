@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.javacource.emelyanov.schedule.model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     static File file = new File("tasks_test.csv");
@@ -39,11 +42,11 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<InMemoryTaskManag
         FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
         fileTaskManager.deleteAllTask();
 
-        Task task1 = fileTaskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1"));
-        Task task2 = fileTaskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2"));
+        Task task1 = fileTaskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1", Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T10:00:00")));
+        Task task2 = fileTaskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2", Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T11:00:00")));
         Epic epic1 = fileTaskManager.createEpic(new Epic("Эпик 1", TaskStatus.NEW, "Описание 2"));
-        Subtask subtask1 = fileTaskManager.createSubtask(new Subtask("Подзадача 1", TaskStatus.DONE, "Описание подзадачи 1", epic1.getId()));
-        Subtask subtask2 = fileTaskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId()));
+        Subtask subtask1 = fileTaskManager.createSubtask(new Subtask("Подзадача 1", TaskStatus.DONE, "Описание подзадачи 1", epic1.getId(), Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T12:00:00")));
+        Subtask subtask2 = fileTaskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId(), Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T13:00:00")));
         final List<Task> tasks = fileTaskManager.getAllTasks();
         final List<Epic> epics = fileTaskManager.getAllEpics();
         final List<Subtask> subtasks = fileTaskManager.getAllSubtasks();
@@ -70,11 +73,11 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<InMemoryTaskManag
         FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
         fileTaskManager.deleteAllTask();
 
-        Task task1 = fileTaskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1"));
-        Task task2 = fileTaskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2"));
+        Task task1 = fileTaskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1", Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T10:00:00")));
+        Task task2 = fileTaskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2", Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T11:00:00")));
         Epic epic1 = fileTaskManager.createEpic(new Epic("Эпик 1", TaskStatus.NEW, "Описание 2"));
-        Subtask subtask1 = fileTaskManager.createSubtask(new Subtask("Подзадача 1", TaskStatus.DONE, "Описание подзадачи 1", epic1.getId()));
-        Subtask subtask2 = fileTaskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId()));
+        Subtask subtask1 = fileTaskManager.createSubtask(new Subtask("Подзадача 1", TaskStatus.DONE, "Описание подзадачи 1", epic1.getId(), Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T13:00:00")));
+        Subtask subtask2 = fileTaskManager.createSubtask(new Subtask("Подзадача 2", TaskStatus.NEW, "Описание подзадачи 2", epic1.getId(), Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T14:00:00")));
 
         TaskManager taskManager = fileTaskManager.loadFromFile(file);
 
@@ -85,4 +88,11 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<InMemoryTaskManag
         assertEquals(5, tasks.size() + epics.size() + subtasks.size(), "Неверное количество задач загружено из файл.");
     }
 
+    @Test
+    @DisplayName("Проверка исключительной ситуации")
+    public void testException() {
+        assertThrows(FileNotFoundException.class, () -> {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("tasks_error.csv")));
+        }, "Отсутствие файла должно приводить к исключению");
+    }
 }

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.javacource.emelyanov.schedule.model.Task;
 import ru.yandex.javacource.emelyanov.schedule.model.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,11 +23,11 @@ class InMemoryHistoryManagerTest {
     void beforeEach() {
         historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager(historyManager);
-        task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1"));
+        task1 = taskManager.createTask(new Task("Задача 1", TaskStatus.NEW, "Описание 1", Duration.ofMinutes(10), LocalDateTime.parse("2020-01-11T10:00:00")));
         task1.setId(1);
-        task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2"));
+        task2 = taskManager.createTask(new Task("Задача 2", TaskStatus.NEW, "Описание 2", Duration.ofMinutes(10), LocalDateTime.parse("2020-01-11T11:00:00")));
         task2.setId(2);
-        task3 = taskManager.createTask(new Task("Задача 3", TaskStatus.NEW, "Описание 3"));
+        task3 = taskManager.createTask(new Task("Задача 3", TaskStatus.NEW, "Описание 3", Duration.ofMinutes(10), LocalDateTime.parse("2020-01-11T12:00:00")));
         task3.setId(3);
     }
 
@@ -61,7 +63,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task2);
         historyManager.add(task3);
         for (int i = 4; i <= 11; i++) {
-            Task task = taskManager.createTask(new Task("Задача " + i, TaskStatus.NEW, "Описание " + i));
+            Task task = taskManager.createTask(new Task("Задача " + i, TaskStatus.NEW, "Описание " + i, Duration.ofMinutes(1), LocalDateTime.parse("2020-01-11T10:00:00").plusDays(i)));
             task.setId(i);
             historyManager.add(task);
         }

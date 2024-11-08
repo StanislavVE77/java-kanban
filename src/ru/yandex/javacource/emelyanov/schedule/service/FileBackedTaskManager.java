@@ -3,10 +3,12 @@ package ru.yandex.javacource.emelyanov.schedule.service;
 import ru.yandex.javacource.emelyanov.schedule.model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private static final String HEADER = "id,type,name,status,description,epic";
+    private static final String HEADER = "id,type,name,status,description,epic,duration,startTime";
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -107,7 +109,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static String toString(Task task) {
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : null);
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription()
+                + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : null) + "," + task.getDuration().toMinutes() + "," + task.getStartTime().toString();
     }
 
     private Task fromString(String line) {
@@ -118,13 +121,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String status = columns[3];
         String epicId = columns[5];
         TaskType type = TaskType.valueOf(columns[1]);
+        Duration duration = Duration.ofMinutes(Integer.parseInt(columns[6]));
+        LocalDateTime startTime = LocalDateTime.parse(columns[7]);
         Task task = null;
         switch (type) {
             case TASK:
-                task = new Task(Integer.parseInt(id), name, TaskStatus.valueOf(status), description);
+                task = new Task(Integer.parseInt(id), name, TaskStatus.valueOf(status), description, duration, startTime);
                 break;
             case SUBTASK:
-                task = new Subtask(Integer.parseInt(id), name, TaskStatus.valueOf(status), description, Integer.parseInt(epicId));
+                task = new Subtask(Integer.parseInt(id), name, TaskStatus.valueOf(status), description, Integer.parseInt(epicId), duration, startTime);
                 break;
             case EPIC:
                 task = new Epic(Integer.parseInt(id), name, TaskStatus.valueOf(status), description);
@@ -172,13 +177,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 } else {
                     subTasks.put(id, (Subtask) task);
                     epics.get(((Subtask) task).getEpicId()).addSubTask(id);
+                    updateEpicStatus(epics.get(((Subtask) task).getEpicId()));
+                    updateEpicDuration(epics.get(((Subtask) task).getEpicId()));
                 }
                 if (maxId < id) {
                     maxId = id;
                 }
             }
         } catch (IOException exception) {
-            throw new FileException("Ошибка записи в файл: " + file.getAbsolutePath(), exception);
+            throw new FileException("Ошибка чтения из файла: " + file.getAbsolutePath(), exception);
         }
         seq = maxId;
     }
