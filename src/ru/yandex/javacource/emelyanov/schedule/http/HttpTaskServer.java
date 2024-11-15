@@ -2,9 +2,6 @@ package ru.yandex.javacource.emelyanov.schedule.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import ru.yandex.javacource.emelyanov.schedule.http.handler.*;
 import ru.yandex.javacource.emelyanov.schedule.service.Managers;
 import ru.yandex.javacource.emelyanov.schedule.service.TaskManager;
@@ -15,7 +12,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class HttpTaskServer {
     private static final int PORT = 8081;
@@ -65,32 +61,6 @@ public class HttpTaskServer {
     public void stop() {
         server.stop(0);
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
-    }
-}
-
-class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    @Override
-    public void write(final JsonWriter jsonWriter, final LocalDateTime localDateTime) throws IOException {
-        jsonWriter.value(localDateTime.format(timeFormatter));
-    }
-
-    @Override
-    public LocalDateTime read(final JsonReader jsonReader) throws IOException {
-        return LocalDateTime.parse(jsonReader.nextString(), timeFormatter);
-    }
-}
-
-class DurationAdapter extends TypeAdapter<Duration> {
-    @Override
-    public Duration read(JsonReader jsonReader) throws IOException {
-        return Duration.ofMinutes(jsonReader.nextInt());
-    }
-
-    @Override
-    public void write(JsonWriter jsonWriter, Duration obj) throws IOException {
-        jsonWriter.value(obj.toMinutes());
     }
 }
 
