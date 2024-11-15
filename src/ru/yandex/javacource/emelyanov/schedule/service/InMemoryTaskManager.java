@@ -64,7 +64,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask createSubtask(Subtask subtask) {
         if (checkSubtaskCrossingTime(subtask)) {
-            throw new TaskValidationException("Задача пересекаются по времени");
+            throw new TaskValidationException("Подзадача пересекается по времени");
         }
         Epic epic = epics.get(subtask.getEpicId());
         Optional.of(epic).orElseThrow(() -> new NotFoundException("Задача с id=" + subtask.getEpicId() + " не найдена."));
@@ -117,7 +117,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if (checkTaskCrossingTime(task)) {
+        if (checkTaskCrossingTimeForUpdate(task)) {
             throw new TaskValidationException("Задача пересекаются по времени");
         }
         Task currentTask = Optional.ofNullable(getTask(task.getId())).orElseThrow(() -> new NotFoundException("Task id = " + task.getId()));
@@ -140,8 +140,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubtask(Subtask subtask) {
         int id = subtask.getId();
-        if (checkSubtaskCrossingTime(subtask)) {
-            throw new TaskValidationException("Задача пересекаются по времени");
+        if (checkSubtaskCrossingTimeForUpdate(subtask)) {
+            throw new TaskValidationException("Подзадача пересекается по времени");
         }
         Subtask currentSubtask = Optional.ofNullable(getSubtask(subtask.getId())).orElseThrow(() -> new NotFoundException("Subtask id = " + subtask.getId()));
         prioritizedTasks.remove(currentSubtask);
@@ -271,37 +271,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setEndTime(end);
     }
 
-    private Boolean checkTaskCrossingTime(Task task) {
-        if (tasks.isEmpty()) {
-            return false;
-        }
-        Optional<Map.Entry<Integer, Task>> savedTask = tasks.entrySet()
-                .stream()
-                .filter(t -> (task.getStartTime().isAfter(t.getValue().getStartTime()) && task.getStartTime().isBefore(t.getValue().getEndTime()))
-                        || (t.getValue().getStartTime().isAfter(task.getStartTime()) && t.getValue().getStartTime().isBefore(task.getEndTime())))
-                .findFirst();
-        if (savedTask.isPresent()) {
-            return true;
-        }
-        return false;
-    }
-
-    private Boolean checkSubtaskCrossingTime(Subtask subtask) {
-        if (subTasks.isEmpty()) {
-            return false;
-        }
-        Optional<Map.Entry<Integer, Subtask>> savedSubtask = subTasks.entrySet()
-                .stream()
-                .filter(t -> (subtask.getStartTime().isAfter(t.getValue().getStartTime()) && subtask.getStartTime().isBefore(t.getValue().getEndTime()))
-                        || (t.getValue().getStartTime().isAfter(subtask.getStartTime()) && t.getValue().getStartTime().isBefore(subtask.getEndTime())))
-                .findFirst();
-        if (savedSubtask.isPresent()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkNotExistId(int id) {
+    public boolean checkNotExistId(int id) {
         List<Task> tasks = getAllTasks();
         for (Task task : tasks) {
             if (task.getId() == id) {
@@ -322,6 +292,69 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return true;
     }
+
+    private Boolean checkTaskCrossingTimeForUpdate(Task task) {
+        if (tasks.isEmpty()) {
+            return false;
+        }
+        Optional<Map.Entry<Integer, Task>> savedTask = tasks.entrySet()
+                .stream()
+                .filter(t -> (task.getStartTime().isAfter(t.getValue().getStartTime()) && task.getStartTime().isBefore(t.getValue().getEndTime()))
+                        || (t.getValue().getStartTime().isAfter(task.getStartTime()) && t.getValue().getStartTime().isBefore(task.getEndTime())) || task.getStartTime().equals(t.getValue().getStartTime()))
+                .filter(t -> t.getValue().getId() != task.getId())
+                .findFirst();
+        if (savedTask.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean checkTaskCrossingTime(Task task) {
+        if (tasks.isEmpty()) {
+            return false;
+        }
+        Optional<Map.Entry<Integer, Task>> savedTask = tasks.entrySet()
+                .stream()
+                .filter(t -> (task.getStartTime().isAfter(t.getValue().getStartTime()) && task.getStartTime().isBefore(t.getValue().getEndTime()))
+                        || (t.getValue().getStartTime().isAfter(task.getStartTime()) && t.getValue().getStartTime().isBefore(task.getEndTime())) || task.getStartTime().equals(t.getValue().getStartTime()))
+                .findFirst();
+        if (savedTask.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean checkSubtaskCrossingTime(Subtask subtask) {
+        if (subTasks.isEmpty()) {
+            return false;
+        }
+        Optional<Map.Entry<Integer, Subtask>> savedSubtask = subTasks.entrySet()
+                .stream()
+                .filter(t -> (subtask.getStartTime().isAfter(t.getValue().getStartTime()) && subtask.getStartTime().isBefore(t.getValue().getEndTime()))
+                        || (t.getValue().getStartTime().isAfter(subtask.getStartTime()) && t.getValue().getStartTime().isBefore(subtask.getEndTime())) || subtask.getStartTime().equals(t.getValue().getStartTime()))
+                .findFirst();
+        if (savedSubtask.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean checkSubtaskCrossingTimeForUpdate(Subtask subtask) {
+        if (subTasks.isEmpty()) {
+            return false;
+        }
+        Optional<Map.Entry<Integer, Subtask>> savedSubtask = subTasks.entrySet()
+                .stream()
+                .filter(t -> (subtask.getStartTime().isAfter(t.getValue().getStartTime()) && subtask.getStartTime().isBefore(t.getValue().getEndTime()))
+                        || (t.getValue().getStartTime().isAfter(subtask.getStartTime()) && t.getValue().getStartTime().isBefore(subtask.getEndTime())) || subtask.getStartTime().equals(t.getValue().getStartTime()))
+                .filter(t -> t.getValue().getId() != subtask.getId())
+                .findFirst();
+        if (savedSubtask.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 

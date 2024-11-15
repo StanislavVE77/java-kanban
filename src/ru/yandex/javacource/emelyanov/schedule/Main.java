@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
+ /*   public static void main(String[] args) {
 
         File file = new File("tasks.csv");
         FileBackedTaskManager fileTaskManager = new FileBackedTaskManager(file);
@@ -92,4 +92,4 @@ public class Main {
         }
 
     }
-}
+*/}
