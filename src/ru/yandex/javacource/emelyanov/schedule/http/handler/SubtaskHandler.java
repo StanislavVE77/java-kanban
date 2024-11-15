@@ -117,8 +117,8 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendNotFound(exchange, "Подзадача с идентификатором " + pathParts[2] + " не найдена.");
                 return;
             }
-            String SubtaskJson = gson.toJson(taskManager.getSubtask(id));
-            sendText(exchange, SubtaskJson);
+            String subtaskJson = gson.toJson(taskManager.getSubtask(id));
+            sendText(exchange, subtaskJson);
         }
     }
 
