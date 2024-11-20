@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 public class Task {
     private String name;
     private String description;
-    private int id;
+    private Integer id;
     private TaskStatus status;
     private Duration duration;
     private LocalDateTime startTime;
@@ -20,14 +20,12 @@ public class Task {
         this.startTime = startTime;
     }
 
-
     public Task(String name, TaskStatus status, String description) {
         this.name = name;
         this.status = status;
         this.description = description;
         this.duration = Duration.ofMinutes(15);
         this.startTime = LocalDateTime.now();
-
     }
 
     public Task(int id, String name, TaskStatus status, String description) {
@@ -134,8 +132,8 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime.format(formatter) +
-                ", endTime=" + getEndTime().format(formatter) +
+                ", startTime='" + startTime.format(formatter) + '\'' +
+                ", endTime='" + getEndTime().format(formatter) + '\'' +
                 '}';
     }
 }
